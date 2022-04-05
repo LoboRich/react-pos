@@ -1,4 +1,4 @@
-# Point of Sale App using React and Firebase (Firestore & Realtime)
+# Point of Sale using React and Firebase (Firestore & Realtime)
 ## Stories
 - [ ] Simple CRUD for Menu
   #### Items will have:
