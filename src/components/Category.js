@@ -33,7 +33,7 @@ const Category = ({db}) => {
   return (
     <div>
       <div>
-        <input type="text" onChange={(event) => {setnewCategory(event.target.value)}}/>
+        <input type="text" onChange={(event) => {setnewCategory(event.target.value)}} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
         <button onClick={create}>Create Category</button>
       </div>
       {categories.map((category) => {
