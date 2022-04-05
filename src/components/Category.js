@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
 
 const Category = ({db}) => {
   const [categories, setCategories] = useState([]);
@@ -15,6 +15,11 @@ const Category = ({db}) => {
     const categoryDoc = doc(db, "categories", e.target.id)
     const newFields = {name: e.target.value}
     await updateDoc(categoryDoc, newFields)
+  }
+
+  const remove = async (id) => {
+    const categoryDoc = doc(db, "categories", id)
+    await deleteDoc(categoryDoc)
   }
 
   useEffect(() => {
@@ -35,6 +40,7 @@ const Category = ({db}) => {
         return (
           <div key={category.id}>
              <input id={category.id} type="text" name="name" onChange={update} value={category.name}/>
+             <button onClick={() => {remove(category.id)}}>Delete</button>
           </div>
         )
       })}
