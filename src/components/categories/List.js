@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
 
 const Category = ({db}) => {
   const [categories, setCategories] = useState([]);
@@ -22,13 +22,24 @@ const Category = ({db}) => {
     await deleteDoc(categoryDoc)
   }
 
+  // List of Catefories
+  // useEffect(() => {
+  //   const getCategories = async () =>{
+  //     const data = await getDocs(categoriesCollectionRef)
+  //     setCategories(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+  //   };
+  //   getCategories();
+  // }, [])
+  
+  // List of Catefories Realtime
   useEffect(() => {
-    const getCategories = async () =>{
-      const data = await getDocs(categoriesCollectionRef)
-      setCategories(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
-    };
-    getCategories();
-  }, [])
+    const category_lists = onSnapshot(categoriesCollectionRef, snapshot => {
+      setCategories(snapshot.docs.map(doc =>  ({data: doc.data(), id: doc.id})));
+    })
+    return () => {
+      category_lists()
+    }
+  }, []);
 
   return (
     <div>
@@ -39,7 +50,7 @@ const Category = ({db}) => {
       {categories.map((category) => {
         return (
           <div key={category.id}>
-             <input id={category.id} type="text" name="name" onChange={update} value={category.name}/>
+             <input id={category.id} type="text" name="name" onChange={update} value={category.data.name}/>
              <button onClick={() => {remove(category.id)}}>Delete</button>
           </div>
         )

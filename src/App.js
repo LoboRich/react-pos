@@ -1,6 +1,6 @@
 import './App.css';
 import { db } from "./firebase-config";
-import Category from './components/Category';
+import Category from './components/categories/List';
 
 function App() {
   
