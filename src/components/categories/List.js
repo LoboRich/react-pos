@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react';
-// import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { collection, updateDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
+import Form from './Form';
 
 const Category = ({db}) => {
   const [categories, setCategories] = useState([]);
-  const [newCategory, setnewCategory] = useState({});
   const categoriesCollectionRef = collection(db, "categories");
-  
-  const create = async () => {
-    await addDoc(categoriesCollectionRef, {name: newCategory});
-  }
 
   const update = async (e) => {
     const categoryDoc = doc(db, "categories", e.target.id)
@@ -30,7 +25,7 @@ const Category = ({db}) => {
   //   };
   //   getCategories();
   // }, [])
-  
+
   // List of Catefories Realtime
   useEffect(() => {
     const category_lists = onSnapshot(categoriesCollectionRef, snapshot => {
@@ -43,10 +38,7 @@ const Category = ({db}) => {
 
   return (
     <div>
-      <div>
-        <input type="text" onChange={(event) => {setnewCategory(event.target.value)}} className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-        <button onClick={create}>Create Category</button>
-      </div>
+      <Form categoriesCollectionRef={categoriesCollectionRef}/>
       {categories.map((category) => {
         return (
           <div key={category.id}>
